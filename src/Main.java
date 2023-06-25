@@ -1,6 +1,4 @@
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -14,8 +12,6 @@ public class Main {
         for (int i = 0; i < texts.length; i++) {
             texts[i] = generateText("aab", 30_000);
         }
-
-        long startTs = System.currentTimeMillis(); // start time
         List<Future> futureList = new ArrayList<>();
         ExecutorService threadPool = Executors.newFixedThreadPool(texts.length);
         for (String text : texts) {
