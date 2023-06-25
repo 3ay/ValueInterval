@@ -1,0 +1,1 @@
+[Условие задачи № 2. Максимальный интервал значений](https://github.com/netology-code/jd-homeworks/tree/video/multithreading/task2)
