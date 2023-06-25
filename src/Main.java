@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -21,14 +22,15 @@ public class Main {
             Future<Integer> future = threadPool.submit(new StringProcessor(text));
             futureList.add(future);
         }
-        for (Future<Integer> future : futureList)
-        {
-            Integer max = future.get();
+        int maxInterval = -1;
+        for (Future future : futureList) {
+            Integer interval = (Integer) future.get();
+            if (interval > maxInterval) {
+                maxInterval = interval;
+            }
         }
         threadPool.shutdown();
-        long endTs = System.currentTimeMillis(); // end time
-
-        System.out.println("Time: " + (endTs - startTs) + "ms");
+        System.out.println("Максимальный интервал значений среди всех строк: " + maxInterval);
     }
 
     public static String generateText(String letters, int length) {
