@@ -1,4 +1,6 @@
-public class StringProcessor implements Runnable {
+import java.util.concurrent.Callable;
+
+public class StringProcessor implements Callable {
     private final String text;
 
     public StringProcessor(String text) {
@@ -6,7 +8,7 @@ public class StringProcessor implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Integer call() throws Exception {
         int maxSize = 0;
         for (int i = 0; i < text.length(); i++) {
             for (int j = 0; j < text.length(); j++) {
@@ -25,6 +27,6 @@ public class StringProcessor implements Runnable {
                 }
             }
         }
-        System.out.println(text.substring(0, 100) + " -> " + maxSize);
+        return maxSize;
     }
 }

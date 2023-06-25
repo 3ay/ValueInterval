@@ -1,29 +1,31 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         String[] texts = new String[25];
         for (int i = 0; i < texts.length; i++) {
             texts[i] = generateText("aab", 30_000);
         }
 
         long startTs = System.currentTimeMillis(); // start time
-        List<Thread> threads = new ArrayList<>();
+        List<Future> futureList = new ArrayList<>();
+        ExecutorService threadPool = Executors.newFixedThreadPool(texts.length);
         for (String text : texts) {
-            Runnable logic = new StringProcessor(text);
-            Thread thread = new Thread(logic);
-            thread.start();
-            threads.add(thread);
+            Future<Integer> future = threadPool.submit(new StringProcessor(text));
+            futureList.add(future);
         }
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        for (Future<Integer> future : futureList)
+        {
+            Integer max = future.get();
         }
+        threadPool.shutdown();
         long endTs = System.currentTimeMillis(); // end time
 
         System.out.println("Time: " + (endTs - startTs) + "ms");
